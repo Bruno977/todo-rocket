@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TextInput, TouchableOpacity, View } from "react-native";
 
 import { styles } from "./styles";
 import { colors } from "../../theme/colors";
@@ -12,6 +10,9 @@ interface InputCreateTaskProps {
   setValue: (value: string) => void;
   handleCreateTask: () => void;
 }
+
+export const INPUT_TEST_ID = "inputTestId";
+export const BUTTON_TEST_ID = "buttonTestId";
 
 export function InputCreateTask({
   value,
@@ -33,8 +34,13 @@ export function InputCreateTask({
           styles.input,
         ]}
         placeholderTextColor={colors.gray300}
+        testID={INPUT_TEST_ID}
       />
-      <TouchableOpacity style={styles.button} onPress={handleCreateTask}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleCreateTask}
+        testID={BUTTON_TEST_ID}
+      >
         <View style={styles.img}>
           <Plus />
         </View>

@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 
-import { EmptyTask } from "..";
+import { EmptyTask } from ".";
 
 describe("<EmptyTask />", () => {
   it("should be render correctly", () => {
