@@ -22,7 +22,6 @@ export function InputCreateTask({
 
   return (
     <View style={styles.container}>
-      {/* <Text>{value}</Text> */}
       <TextInput
         placeholder="Adicione uma nova tarefa"
         onFocus={() => setIsFocus(true)}
