@@ -20,4 +20,4 @@ Aplicação de controle de tarefas no estilo **to-do list**, que contém as segu
 - [Jest](https://jestjs.io/)
 - [TypeScript](https://www.typescriptlang.org/)
 
-![image](https://github.com/user-attachments/assets/a58cc863-3ead-45ae-aa69-7ce0c707bc99)
+![image](https://github.com/user-attachments/assets/77d22483-53c5-49ab-b4c1-f39108d6ff07)
