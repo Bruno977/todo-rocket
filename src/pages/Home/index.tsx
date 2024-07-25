@@ -10,6 +10,8 @@ import { TaskProps } from "../../@types/task";
 import { EmptyTask } from "../../components/EmptyTask";
 import { useEffect, useState } from "react";
 import { getStorageTasks, setStorageTask } from "../../libs/asyncStorage";
+import { removeTask } from "../../utils/removeTasks";
+import { updateTask } from "../../utils/updateTasks";
 
 export function Home() {
   const [valueInput, setValueInput] = useState("");
@@ -48,16 +50,10 @@ export function Home() {
 
   async function handleUpdateTask(taskId: string) {
     try {
-      const updateTasks: TaskProps[] = tasks.map((task) => {
-        if (task.id === taskId) {
-          return { ...task, isCompleted: !task.isCompleted };
-        } else {
-          return task;
-        }
-      });
+      const updatedTasks = updateTask(tasks, taskId);
 
-      await setStorageTask(updateTasks);
-      setTasks(updateTasks);
+      await setStorageTask(updatedTasks);
+      setTasks(updatedTasks);
     } catch (error) {
       console.log(error);
     }
@@ -65,11 +61,9 @@ export function Home() {
 
   async function handleRemoveTask(taskId: string) {
     try {
-      const removeTasks: TaskProps[] = tasks.filter(
-        (task) => task.id !== taskId
-      );
-      await setStorageTask(removeTasks);
-      setTasks(removeTasks);
+      const newTasks = removeTask(tasks, taskId);
+      await setStorageTask(newTasks);
+      setTasks(newTasks);
     } catch (error) {
       console.log(error);
     }
