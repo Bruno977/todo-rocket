@@ -8,13 +8,12 @@ import uuid from "react-native-uuid";
 import { TaskItem } from "../../components/TaskItem";
 import { TaskProps } from "../../@types/task";
 import { EmptyTask } from "../../components/EmptyTask";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { getStorageTasks, setStorageTask } from "../../libs/asyncStorage";
 
-const TASKS_KEY = "tasks";
 export function Home() {
   const [valueInput, setValueInput] = useState("");
-  const [tasks, setTasks] = useState<TaskProps[]>([]);
+  const [tasks, setTasks] = useState<TaskProps[] | []>([]);
 
   const createdCount = tasks.length;
   const completedCount = tasks.filter((task) => task.isCompleted).length;
@@ -29,12 +28,8 @@ export function Home() {
         name: valueInput,
         isCompleted: false,
       };
-      const values = await AsyncStorage.getItem(TASKS_KEY);
-      const prevTasks = values ? JSON.parse(values) : [];
-      await AsyncStorage.setItem(
-        TASKS_KEY,
-        JSON.stringify([...prevTasks, data])
-      );
+      const response = await getStorageTasks();
+      await setStorageTask([...response, data]);
       setValueInput("");
       setTasks((prevTasks) => [...prevTasks, data]);
     } catch (error) {
@@ -44,12 +39,8 @@ export function Home() {
 
   async function getTasks() {
     try {
-      const values = await AsyncStorage.getItem(TASKS_KEY);
-      if (!values) {
-        return;
-      }
-      const jsonValue = JSON.parse(values);
-      setTasks(jsonValue);
+      const response = await getStorageTasks();
+      setTasks(response);
     } catch (error) {
       console.error(error);
     }
@@ -65,7 +56,7 @@ export function Home() {
         }
       });
 
-      await AsyncStorage.setItem(TASKS_KEY, JSON.stringify(updateTasks));
+      await setStorageTask(updateTasks);
       setTasks(updateTasks);
     } catch (error) {
       console.log(error);
@@ -77,7 +68,7 @@ export function Home() {
       const removeTasks: TaskProps[] = tasks.filter(
         (task) => task.id !== taskId
       );
-      await AsyncStorage.setItem(TASKS_KEY, JSON.stringify(removeTasks));
+      await setStorageTask(removeTasks);
       setTasks(removeTasks);
     } catch (error) {
       console.log(error);
